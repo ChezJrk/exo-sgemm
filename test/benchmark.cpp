@@ -5,10 +5,6 @@
 #include <random>
 #include <vector>
 
-#ifndef CBLAS_NAME
-#error Must set CBLAS_NAME
-#endif
-
 // ----------------------------------------------------------------------------
 // Utilities
 
@@ -49,7 +45,7 @@ static void BM_square_sgemm(benchmark::State &state) {
 // ----------------------------------------------------------------------------
 // MKL SGEMM benchmark
 
-struct cblas_square {
+struct mkl_square {
   void operator()(const float *a, const float *b, float *c, int n) {
     cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,  // layout
         n, n, n,                                            // m, n, k
@@ -62,8 +58,8 @@ struct cblas_square {
   }
 };
 
-BENCHMARK_TEMPLATE(BM_square_sgemm, cblas_square)
-    ->Name("sgemm_" CBLAS_NAME)
+BENCHMARK_TEMPLATE(BM_square_sgemm, mkl_square)
+    ->Name("sgemm_mkl")
     ->Arg(64)
     ->Arg(192)
     ->Arg(221)
