@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vcpkg",
+      "displayName": "Vcpkg build",
+      "description": "Build with dependencies from Vcpkg",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "name": "vcpkg-gcc",
+      "displayName": "Vcpkg build (GCC)",
+      "description": "Build with dependencies from Vcpkg (GCC compiler settings)",
+      "inherits": [
+        "vcpkg"
+      ],
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "-march=native",
+        "CMAKE_CXX_FLAGS": "-march=native"
+      }
+    },
+    {
+      "name": "vcpkg-msvc",
+      "displayName": "Vcpkg build (MSVC)",
+      "description": "Build with dependencies from Vcpkg (MSVC compiler settings)",
+      "inherits": [
+        "vcpkg"
+      ],
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "/arch:AVX512",
+        "CMAKE_CXX_FLAGS": "/arch:AVX512"
+      }
+    }
+  ]
+}
