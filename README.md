@@ -48,8 +48,8 @@ dev@host:exo-sgemm$ source $HOME/.venv/exo-sgemm/bin/activate
 
 When using this preset, vcpkg will install its dependencies into a subdirectory of
 the `build` folder. It will also store caches of the dependencies in a platform-specific
-location. To completely remove everything created by the build command, you will need
-to remove these folders as well. If you wish to disable this caching behavior, set the
+location. To completely remove everything created by the build command, you will need to
+remove these folders as well. If you wish to disable this caching behavior, set the
 environment variable `VCPKG_BINARY_SOURCES=clear`. For more information, see the vcpkg
 documentation here: https://vcpkg.io/en/docs/users/binarycaching.html
 
