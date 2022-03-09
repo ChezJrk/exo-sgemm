@@ -19,21 +19,21 @@ find_package(MKL REQUIRED)
 find_package(benchmark REQUIRED)
 
 ## Google Test
-# find_package(GTest REQUIRED)
+find_package(GTest REQUIRED)
 
 # ---------------------------------------------------------------------------- #
 # Tests
+
+add_executable(correctness correctness.cpp)
+target_link_libraries(correctness PRIVATE GTest::gtest_main exo-sgemm::sgemm MKL::MKL)
+target_compile_features(correctness PRIVATE cxx_std_17)
+
+gtest_discover_tests(correctness)
 
 # ---------------------------------------------------------------------------- #
 # Benchmarks
 
 add_executable(benchmark benchmark.cpp)
 target_link_libraries(
-  benchmark
-  PRIVATE
-  benchmark::benchmark_main
-  exo-sgemm::sgemm
-  MKL::MKL
-)
+    benchmark PRIVATE benchmark::benchmark_main exo-sgemm::sgemm MKL::MKL)
 target_compile_features(benchmark PRIVATE cxx_std_17)
-target_compile_definitions(benchmark PRIVATE CBLAS_NAME="MKL")
