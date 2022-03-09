@@ -40,8 +40,6 @@ M_L1_BLK = M_REG_BLK * M_L1_FAC
 N_L1_BLK = N_REG_BLK * N_L1_FAC
 K_L1_BLK = 512
 
-COPY_STREAMS = 3
-
 basic_kernel_Mx4 = {}
 sgemm_kernel_avx512_Mx4 = {}
 for M in range(1, M_REG_BLK + 1):
@@ -114,7 +112,7 @@ right_panel_kernel = (
     SGEMM_WINDOW
         .rename('right_panel_kernel')
         .partial_eval(M=M_REG_BLK)
-        .add_assertion('N / 16 < 4')
+        .add_assertion(f'N / {VEC_W} < 4')
         .simplify()
 )
 
@@ -176,7 +174,7 @@ right_panel_kernel_scheduled = (
         .replace_all(right_panel_kernel)
         #
         .specialize('right_panel_kernel(_) #0',
-                    [f'(N / 16) == {i}' for i in range(N_REG_BLK // VEC_W)])
+                    [f'(N / {VEC_W}) == {i}' for i in range(N_REG_BLK // VEC_W)])
         #
         .repeat(Procedure.call_eqv, right_panel_kernel_opt,
                 'right_panel_kernel(_)')
@@ -301,9 +299,5 @@ sgemm_exo = (
         # Clean up
         .simplify()
 )
-
-if __name__ == '__main__':
-    # print(sgemm_above_kernel)
-    print(sgemm_exo)
 
 __all__ = ['sgemm_exo']
