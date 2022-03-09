@@ -33,7 +33,7 @@ if (EXO_SGEMM_ENABLE_PACKAGING)
       CACHE STRING "Path to exo-sgemm's CMake files")
 
   install(
-    TARGETS sgemm EXPORT sgemm-config
+    TARGETS sgemm EXPORT exo-sgemm-config
     RUNTIME COMPONENT exo-sgemm-runtime
     LIBRARY COMPONENT exo-sgemm-runtime
     NAMELINK_COMPONENT exo-sgemm-development
@@ -42,18 +42,18 @@ if (EXO_SGEMM_ENABLE_PACKAGING)
   )
 
   install(
-    EXPORT sgemm-config
+    EXPORT exo-sgemm-config
     NAMESPACE exo-sgemm::
     DESTINATION "${EXO_SGEMM_INSTALL_CMAKEDIR}"
   )
 
   write_basic_package_version_file(
-    sgemm-config-version.cmake
+    exo-sgemm-config-version.cmake
     COMPATIBILITY SameMinorVersion
   )
 
   install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/sgemm-config-version.cmake"
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/exo-sgemm-config-version.cmake"
     DESTINATION "${EXO_SGEMM_INSTALL_CMAKEDIR}"
     COMPONENT exo-sgemm-development
   )
