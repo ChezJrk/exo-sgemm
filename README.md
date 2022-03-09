@@ -61,6 +61,8 @@ line or in a toolchain file) such that AVX-512 code will compile.
 
 [CMake]: https://cmake.org/download/
 
+[Conan]: https://conan.io/
+
 [Google Benchmark]: https://github.com/google/benchmark
 
 [Google Test]: https://github.com/google/googletest
