@@ -81,7 +81,7 @@ bottom_panel_kernel = (
     SGEMM_WINDOW
         .rename('bottom_panel_kernel')
         .partial_eval(N=N_REG_BLK)
-        .add_assertion('M < 6')
+        .add_assertion(f'M < {M_REG_BLK}')
         .simplify()
 )
 
@@ -270,28 +270,28 @@ sgemm_exo = (
         .fission_after('for i0 in _: _ #0')
         ## Case 2 memory staging
         .stage_window('B2_cache', 'B[_] #1', DRAM_STATIC)
-        .bound_alloc('B2_cache: _', [None, '64'])
+        .bound_alloc('B2_cache: _', [None, f'{N_L1_BLK}'])
         .lift_alloc('B2_cache: _')
         .fission_after('for i0 in _: _ #2')
         ## Case 3 memory staging
         .stage_window('B3_cache', 'B[_] #2', DRAM_STATIC)
         ## Case 4 memory staging
         .stage_window('B4_cache', 'B[_] #3', DRAM_STATIC)
-        .bound_alloc('B4_cache: _', [None, '64'])
+        .bound_alloc('B4_cache: _', [None, f'{N_L1_BLK}'])
         ## Case 5 memory staging
         .stage_window('B5_cache', 'B[_] #4', DRAM_STATIC)
-        .bound_alloc('B5_cache: _', ['512', None])
+        .bound_alloc('B5_cache: _', [f'{K_L1_BLK}', None])
         ## Case 6 memory staging
         .stage_window('B6_cache', 'B[_] #5', DRAM_STATIC)
-        .bound_alloc('B6_cache: _', ['512', '64'])
+        .bound_alloc('B6_cache: _', [f'{K_L1_BLK}', f'{N_L1_BLK}'])
         # .lift_alloc('B6_cache: _')
         # .fission_after('for i0 in _: _ #6')
         ## Case 7 memory staging
         .stage_window('B7_cache', 'B[_] #6', DRAM_STATIC)
-        .bound_alloc('B7_cache: _', ['512', None])
+        .bound_alloc('B7_cache: _', [f'{K_L1_BLK}', None])
         ## Case 8 memory staging
         .stage_window('B8_cache', 'B[_] #7', DRAM_STATIC)
-        .bound_alloc('B8_cache: _', ['512', '64'])
+        .bound_alloc('B8_cache: _', [f'{K_L1_BLK}', f'{N_L1_BLK}'])
         ## Replace SGEMM_WINDOW with optimized form
         # These must come AFTER bound_alloc since the internal check-effects
         # is a whole program analysis that is VERY expensive
